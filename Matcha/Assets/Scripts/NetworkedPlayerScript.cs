@@ -13,12 +13,14 @@ public class NetworkedPlayerScript : NetworkBehaviour
     public TextMesh playerNameText;
     public GameObject floatingInfo;
     public Rigidbody2D rb;
+    public GameObject projectilePrefab;
+    public Transform projectileMount;
 
     [SyncVar(hook = nameof(OnNameChanged))]
     public string playerName;
 
   
-    private void OnNameChanged(string _old, string _new) {
+    void OnNameChanged(string _old, string _new) {
         playerNameText.text = playerName;
     }
 
@@ -42,6 +44,23 @@ public class NetworkedPlayerScript : NetworkBehaviour
     void Update()
     {
         HandleMovement();
+        HandleShooting();
+    }
+
+    // this is called on the server
+    [Command]
+    void CmdFire()
+    {
+        GameObject projectile = Instantiate(projectilePrefab, projectileMount.position, projectileMount.rotation);
+        NetworkServer.Spawn(projectile);
+        RpcOnFire();
+    }
+
+    // this is called on the tank that fired for all observers
+    [ClientRpc]
+    void RpcOnFire()
+    {
+// animator.SetTrigger("Shoot");
     }
 
     private void HandleMovement()
@@ -56,5 +75,18 @@ public class NetworkedPlayerScript : NetworkBehaviour
         float y = Input.GetAxis("Vertical") * speed;
         //  transform.Translate(new Vector3(x, y, 0));
         rb.AddForce(new Vector2(x, y));
+    }
+
+    void HandleShooting()
+    {
+        if (!isLocalPlayer)
+        {
+            return;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            CmdFire();
+        }
     }
 }
