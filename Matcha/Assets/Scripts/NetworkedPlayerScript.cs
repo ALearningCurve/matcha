@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Mirror;
 
 /// <summary>
@@ -8,14 +9,33 @@ using Mirror;
 /// </summary>
 public class NetworkedPlayerScript : NetworkBehaviour
 {
-    private Rigidbody2D rb;
     private const float speed = 10f;
+    public Text playerNameText;
+    public GameObject floatingInfo;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        rb = GetComponent<Rigidbody2D>();
+    [SyncVar(hook = nameof(OnNameChanged))]
+    public string playerName;
+
+  
+    private void OnNameChanged(string _old, string _new) {
+        playerNameText.text = playerName;
     }
+
+
+    public override void OnStartLocalPlayer()
+    {   
+        base.OnStartClient();
+        SetupPlayer("Player");
+    }
+
+    [Command]
+    public void SetupPlayer(string name)
+    {
+        // Make these changes on the server by calling the command,
+        // this way the changes will be networked by the server.
+        playerName = name;
+    }
+
 
     // Update is called once per frame
     void Update()
