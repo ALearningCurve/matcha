@@ -9,7 +9,7 @@ using Mirror;
 public class NetworkedPlayerScript : NetworkBehaviour
 {
     private Rigidbody2D rb;
-    private const int speed = 10;
+    private const float speed = 10f;
 
     // Start is called before the first frame update
     void Start()
