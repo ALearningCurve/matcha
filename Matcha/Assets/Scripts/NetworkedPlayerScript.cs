@@ -31,9 +31,8 @@ public class NetworkedPlayerScript : NetworkBehaviour
             return;
         }
 
-        float x = Input.GetAxis("Horizontal") * speed;
-        float y = Input.GetAxis("Vertical") * speed;
-        Vector2 vect = new Vector2(x, y);
-        rb.AddForce(vect);
+        float x = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
+        float y = Input.GetAxis("Vertical") * speed * Time.deltaTime;
+        transform.Translate(new Vector3(x, y, 0));
     }
 }
