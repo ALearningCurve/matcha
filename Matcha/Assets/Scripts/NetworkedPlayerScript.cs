@@ -11,7 +11,7 @@ public class NetworkedPlayerScript : NetworkBehaviour
 {
     private const float speed = 5f;
     public TextMesh playerNameText;
-    public GameObject floatingInfo;
+    public GameObject floatingInfo; 
     public Rigidbody2D rb;
     public GameObject projectilePrefab;
     public Transform projectileMount;
@@ -60,7 +60,7 @@ public class NetworkedPlayerScript : NetworkBehaviour
     [ClientRpc]
     void RpcOnFire()
     {
-// animator.SetTrigger("Shoot");
+        // animator.SetTrigger("Shoot");
     }
 
     private void HandleMovement()
