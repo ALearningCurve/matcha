@@ -9,9 +9,10 @@ using Mirror;
 /// </summary>
 public class NetworkedPlayerScript : NetworkBehaviour
 {
-    private const float speed = 10f;
-    public Text playerNameText;
+    private const float speed = 5f;
+    public TextMesh playerNameText;
     public GameObject floatingInfo;
+    public Rigidbody2D rb;
 
     [SyncVar(hook = nameof(OnNameChanged))]
     public string playerName;
@@ -51,8 +52,9 @@ public class NetworkedPlayerScript : NetworkBehaviour
             return;
         }
 
-        float x = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
-        float y = Input.GetAxis("Vertical") * speed * Time.deltaTime;
-        transform.Translate(new Vector3(x, y, 0));
+        float x = Input.GetAxis("Horizontal") * speed;
+        float y = Input.GetAxis("Vertical") * speed;
+        //  transform.Translate(new Vector3(x, y, 0));
+        rb.AddForce(new Vector2(x, y));
     }
 }
