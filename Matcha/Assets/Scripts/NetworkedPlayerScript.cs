@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
 /// <summary>
 /// This is simply an approximation of a player controller to test how movement is networked.
 /// </summary>
-public class NetworkedPlayerScript : MonoBehaviour
+public class NetworkedPlayerScript : NetworkBehaviour
 {
     private Rigidbody2D rb;
     private const int speed = 10;
@@ -19,23 +20,20 @@ public class NetworkedPlayerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.W))
-        {
-            rb.AddForce(new Vector2(0, speed));
-        }        
-        else if (Input.GetKey(KeyCode.A))
-        {
-            rb.AddForce(new Vector2(-1 * speed,0));
+        HandleMovement();
+    }
 
+    private void HandleMovement()
+    {
+        // we only want the client to be able to move their own player
+        if (!isLocalPlayer)
+        {
+            return;
         }
-        else if (Input.GetKey(KeyCode.S))
-        {
-            // nothing lol
-        }        
-        else if (Input.GetKey(KeyCode.D))
-        {
-            rb.AddForce(new Vector2(speed,0));
 
-        }
+        float x = Input.GetAxis("Horizontal") * speed;
+        float y = Input.GetAxis("Vertical") * speed;
+        Vector2 vect = new Vector2(x, y);
+        rb.AddForce(vect);
     }
 }
