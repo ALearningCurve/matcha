@@ -14,7 +14,7 @@ public class MatchaNetworkManager : NetworkManager
 
     public override void OnStopServer()
     {
-        Debug.Log("Server Stopped");
+        Debug.Log("Server Stopped: as of now");
         base.OnStopServer();
     }
 
