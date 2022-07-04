@@ -439,7 +439,8 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 1024
-  mainCam: {fileID: 0}
+  mainCam: {fileID: 519420031}
+  bulletPrefab: {fileID: 7610430546409506716, guid: 2030c7ffafa44e64f8273238c8b55a1e, type: 3}
   speed: 10
   jumpHeight: 20
   downGravity: 1

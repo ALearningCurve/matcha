@@ -142,7 +142,9 @@ public class PlayerController : MonoBehaviour
         {
             GameObject bullet;
             bullet = Instantiate(bulletPrefab, mousePosition, Quaternion.identity);
-            bullet.GetComponent<Rigidbody2D>().AddForce(mousePosition);
+
+            //bullet speed and angle calculations still need to be done
+            bullet.GetComponent<Rigidbody2D>().velocity = new Vector2(moveDirection.x * speed, moveDirection.y * speed);
         }
     }
 
