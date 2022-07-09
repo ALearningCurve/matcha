@@ -30,8 +30,6 @@ public class PlayerController : MonoBehaviour
 
     public PlayerInputActions playerControls;
     private InputAction move;
-    private InputAction fire;
-    private InputAction look;
     private InputAction jump;
 
 
@@ -50,14 +48,6 @@ public class PlayerController : MonoBehaviour
         move = playerControls.Player.Move;
         move.Enable();
 
-        fire = playerControls.Player.Fire;
-        fire.Enable();
-        fire.performed += Fire;
-
-
-        look = playerControls.Player.Look;
-        look.Enable();
-        look.performed += Look;
 
         jump = playerControls.Player.Jump;
         jump.Enable();
@@ -68,8 +58,6 @@ public class PlayerController : MonoBehaviour
     private void OnDisable()
     {
         move.Disable();
-        fire.Disable();
-        look.Disable();
         jump.Disable();
     }
 
@@ -79,7 +67,7 @@ public class PlayerController : MonoBehaviour
         moveDirection = move.ReadValue<Vector2>();
 
         //if the ground check circle overlaps with the ground, the player is grounded (and can jump again)
-        if (Physics2D.OverlapCircle(groundCheck.transform.position, groundCheck.transform.localScale.y, groundLayer))
+        if (Physics2D.OverlapCircle(groundCheck.transform.position, groundCheck.transform.localScale.y/2, groundLayer))
         {
             isGrounded = true;
         }
@@ -136,23 +124,6 @@ public class PlayerController : MonoBehaviour
         transform.localScale = localScale;
     }
 
-    private void Fire(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            GameObject bullet;
-            bullet = Instantiate(bulletPrefab, mousePosition, Quaternion.identity);
-
-            //bullet speed and angle calculations still need to be done
-            bullet.GetComponent<Rigidbody2D>().velocity = new Vector2(moveDirection.x * speed, moveDirection.y * speed);
-        }
-    }
-
-    private void Look(InputAction.CallbackContext context)
-    {
-        mousePosition = playerControls.Player.Look.ReadValue<Vector2>();
-        mousePosition = mainCam.ScreenToWorldPoint(mousePosition);
-    }
 
     private void Jump(InputAction.CallbackContext context)
     {
@@ -167,42 +138,5 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
-    /*
-    //handles horizontal player movement 
-    public void Move(InputAction.CallbackContext context)
-    {
-        horizontal = context.ReadValue<Vector2>().x;
-    }
-
-    //handles player jumps
-    public void Jump(InputAction.CallbackContext context)
-    {
-        if (context.performed && isGrounded)
-        {
-            rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
-        }
-
-        if (context.canceled && rb.velocity.y > 0f)
-        {
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
-        }
-    }
-
-    //handles firing gun
-    public void Fire(InputAction.CallbackContext context)
-    {
-        //still needs to be done
-        Debug.Log("fired");
-    }
-
-    public void Look(InputAction.CallbackContext context)
-    {
-        mousePosition = context.ReadValue<Vector2>();
-        mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
-
-    }
-
-    */
 
 }
