@@ -100,6 +100,7 @@ public class PlayerController : MonoBehaviour
         }
 
         //this is the line of code that actually moves the player
+        //also prevents some forces from affecting the player when not moving because movedirection = 0 when not moving;
         rb.velocity = new Vector2(moveDirection.x * speed, rb.velocity.y);
 
 
