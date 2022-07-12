@@ -11,7 +11,7 @@ public class BulletHit : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(transform.position.x > maxBulletDistance || transform.position.x < -maxBulletDistance)
+        if(transform.position.x > maxBulletDistance || transform.position.x < -maxBulletDistance || transform.position.y > maxBulletDistance || transform.position.y < -maxBulletDistance)
         {
             Destroy(gameObject);
         }

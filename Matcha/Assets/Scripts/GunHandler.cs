@@ -6,14 +6,13 @@ using UnityEngine.InputSystem;
 public class GunHandler : MonoBehaviour
 {
 
-    [SerializeField] private Rigidbody2D rb;
+    private SpriteRenderer gunSprite;
+    private SpriteRenderer bulletSprite;
 
+    [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Camera cam;
 
-    [SerializeField] GameObject player;
-    
-    Vector2 mousePos;
-
+    [SerializeField] private GameObject player;
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private GameObject shootingPoint;
 
@@ -23,14 +22,50 @@ public class GunHandler : MonoBehaviour
     private InputAction look;
     private InputAction fire;
 
+    private Vector2 mousePos;
     private Vector2 mousePosition;
+
+
+    //make a list or array (not sure which is better) that has like 10 or so colors in it. WHen you shoot gun, change color of spriterenderer of gun and bullet to a random color from the list/array;
+    //
+    List<Color> colors = new List<Color>();
 
     private void Awake()
     {
         //we create a variable called playerControls which is equal to a new instance of the PlayerInputActions asset that we created in the inspector
         playerControls = new PlayerInputActions();
         rb = GetComponent<Rigidbody2D>();
+        gunSprite = GetComponent<SpriteRenderer>();
+        bulletSprite = bulletPrefab.GetComponent<SpriteRenderer>();
+
+        gunSprite.color = Color.white;
+        bulletSprite.color = Color.white;
+
+        //there is probably a better way of doing this 
+        //pls optimize thx
+        colors.Add(Color.red);
+        colors.Add(Color.green);
+        colors.Add(Color.blue);
+        colors.Add(Color.red);
+        colors.Add(Color.magenta);
+        colors.Add(Color.yellow);
+        colors.Add(Color.cyan);
+        colors.Add(Color.white);
+
     }
+
+
+    /*Code for when player gets hit by bullet of the same color
+     * 
+     * if(collision.gameObject.tag == "Bullet"){
+     *  if(playerSprite.color = collision.gameObject.GetComponent<SpriteRenderer>().color){
+     *      playerHealth -= 10f;
+     *  }else{
+     *      playerSprite.color = collision.gameObject.GetComponent<SpriteRenderer>().color;
+     *  }
+     *} 
+     *
+     */
 
     private void OnEnable()
     {
@@ -75,6 +110,14 @@ public class GunHandler : MonoBehaviour
         Rigidbody2D bulletRB = bullet.GetComponent<Rigidbody2D>();
         bulletRB.AddForce(shootingPoint.transform.up * bulletSpeed, ForceMode2D.Impulse);
 
+
+        //Set the SpriteRenderer to the Color defined by the Sliders
+        int randomColor = Random.Range(0, colors.Count);
+        gunSprite.color = colors[randomColor];
+        bulletSprite.color = colors[randomColor];
+
+
+
     }
 
 
@@ -83,6 +126,18 @@ public class GunHandler : MonoBehaviour
     void Update()
     {
         mousePos = cam.ScreenToWorldPoint(mousePosition);
+
+        if(mousePos.x > player.transform.position.x)
+        {
+            player.GetComponent<SpriteRenderer>().flipX = false;
+            GetComponent<SpriteRenderer>().flipX = false;
+        }
+
+        if(mousePos.x < player.transform.position.x)
+        {
+            player.GetComponent<SpriteRenderer>().flipX = true;
+            GetComponent<SpriteRenderer>().flipX = true;
+        }
     }
 
     private void FixedUpdate()

@@ -77,6 +77,8 @@ public class PlayerController : MonoBehaviour
         }
 
         //flips player 
+        /*
+         * no longer necessary because GunHandler now flips sprite based on mouse position relative to player
         if (!isFacingRight && moveDirection.x > 0f)
         {
             Flip();
@@ -85,6 +87,7 @@ public class PlayerController : MonoBehaviour
         {
             Flip();
         }
+        */
     }
 
 
