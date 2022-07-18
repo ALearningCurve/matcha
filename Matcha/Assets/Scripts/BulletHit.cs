@@ -23,7 +23,7 @@ public class BulletHit : MonoBehaviour
         //Debug.Log("bullet hit something");
         //Destroys the bullet when it collides with something that has a 2D collider
         Destroy(gameObject);
-        Explode();
+        //Explode();
 
 
         //down here vvv you would add the necessary code for dealing damage and whatnot
@@ -31,7 +31,7 @@ public class BulletHit : MonoBehaviour
 
     }
 
-
+    /*
     //I stole all of this code from here..
     //this code makes it so that it an "explosion force" is added to the rigidbody of any object that the bullet collides with.
     //This can be used to make pseudo rocket jumping (will need adjustments for this to work)
@@ -75,4 +75,5 @@ public class BulletHit : MonoBehaviour
     }
 
     //... to here
+    */
 }
