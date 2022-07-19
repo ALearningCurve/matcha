@@ -4,19 +4,19 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    public Rigidbody2D rb;
-    public GameObject groundCheck;
-    public LayerMask groundLayer;
-    public Camera mainCam;
 
+    private float coyoteTime = 0.2f;
+    private float coyoteTimeCounter;
+
+    [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private GameObject groundCheck;
+    [SerializeField] private LayerMask groundLayer;
     [SerializeField] private GameObject bulletPrefab;
     
-    private bool isFacingRight = true;
     private bool isGrounded = false;
 
     private Vector2 lastVelocity = Vector2.zero;
     private Vector2 moveDirection = Vector2.zero;
-    private Vector2 mousePosition = Vector2.zero;
 
     //controls how fast player moves
     [SerializeField] private float speed;
@@ -36,11 +36,6 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         playerControls = new PlayerInputActions();
-    }
-
-    private void Start()
-    {
-        mainCam = Camera.main;
     }
 
     private void OnEnable()
@@ -76,18 +71,18 @@ public class PlayerController : MonoBehaviour
             isGrounded = false;
         }
 
-        //flips player 
-        /*
-         * no longer necessary because GunHandler now flips sprite based on mouse position relative to player
-        if (!isFacingRight && moveDirection.x > 0f)
+
+        if (isGrounded)
         {
-            Flip();
+            coyoteTimeCounter = coyoteTime;
         }
-        else if (isFacingRight && moveDirection.x < 0f)
+        else
         {
-            Flip();
+            coyoteTimeCounter -= Time.deltaTime;
         }
-        */
+
+     
+
     }
 
 
@@ -119,28 +114,23 @@ public class PlayerController : MonoBehaviour
         lastVelocity = rb.velocity;
     }
 
-    //flips sprite so that it is facing the right way
-    private void Flip()
-    {
-        isFacingRight = !isFacingRight;
-        Vector3 localScale = transform.localScale;
-        localScale.x *= -1f;
-        transform.localScale = localScale;
-    }
 
 
     private void Jump(InputAction.CallbackContext context)
     {
-        if (context.performed && isGrounded)
+        if (context.performed && coyoteTimeCounter > 0f)
         {
+            Debug.Log(coyoteTimeCounter);
             rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
         }
 
         if (context.canceled && rb.velocity.y > 0f)
         {
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
+            coyoteTimeCounter = 0f;
         }
-    }
 
+
+    }
 
 }
