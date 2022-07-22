@@ -31,9 +31,18 @@ public class BulletHit : MonoBehaviour
             Destroy(gameObject);
         }
 
+        /*
+         *if we want the bullets to bounce off of each other instead of breaking when colliding with each other, use this if statement instead of the one above
+         *
+        if (collision.gameObject.tag != "Mirror" && collision.gameObject.tag != "Bullet")
+        {
+            //Destroys the bullet when it collides with something that has a 2D collider that isn't a mirror
+            Destroy(gameObject);
+        }
+        */
 
 
     }
 
-    
+
 }
