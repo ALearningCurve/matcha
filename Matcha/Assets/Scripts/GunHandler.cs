@@ -55,17 +55,6 @@ public class GunHandler : MonoBehaviour
     }
 
 
-    /*Code for when player gets hit by bullet of the same color
-     * 
-     * if(collision.gameObject.tag == "Bullet"){
-     *  if(playerSprite.color = collision.gameObject.GetComponent<SpriteRenderer>().color){
-     *      playerHealth -= 10f;
-     *  }else{
-     *      playerSprite.color = collision.gameObject.GetComponent<SpriteRenderer>().color;
-     *  }
-     *} 
-     *
-     */
 
     private void OnEnable()
     {
@@ -101,6 +90,7 @@ public class GunHandler : MonoBehaviour
     private void Look(InputAction.CallbackContext context)
     {
         mousePosition = playerControls.Player.Look.ReadValue<Vector2>();
+        //Debug.Log(mousePosition);
 
     }
 
@@ -127,6 +117,9 @@ public class GunHandler : MonoBehaviour
     {
         mousePos = cam.ScreenToWorldPoint(mousePosition);
 
+        // Debug.Log(mousePos);
+
+
         if(mousePos.x > player.transform.position.x)
         {
             player.GetComponent<SpriteRenderer>().flipX = false;
@@ -149,6 +142,9 @@ public class GunHandler : MonoBehaviour
         float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
         rb.rotation = angle;
     }
+
+
+
 
 
 }

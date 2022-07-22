@@ -4,20 +4,24 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-
-    private float coyoteTime = 0.2f;
-    private float coyoteTimeCounter;
-
     [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private GameObject bulletPrefab;
+
+
+    [Header("Ground Objects")]
     [SerializeField] private GameObject groundCheck;
     [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private GameObject bulletPrefab;
-    
+
+    private SpriteRenderer playerSprite;
+
     private bool isGrounded = false;
+
+    private float jumpIsPressed = 0f;
 
     private Vector2 lastVelocity = Vector2.zero;
     private Vector2 moveDirection = Vector2.zero;
 
+    [Header("Player Movement Settings")]
     //controls how fast player moves
     [SerializeField] private float speed;
 
@@ -26,6 +30,13 @@ public class PlayerController : MonoBehaviour
 
     //controls how much force is added downwards when the player is falling
     [SerializeField] private float downGravity;
+
+    [Header("Buffer Settings")]
+    [SerializeField] private float jumpBufferTime = 0.2f;
+    private float jumpBufferCounter;
+
+    [SerializeField] private float coyoteTime = 0.2f;
+    private float coyoteTimeCounter;
 
 
     public PlayerInputActions playerControls;
@@ -56,10 +67,21 @@ public class PlayerController : MonoBehaviour
         jump.Disable();
     }
 
+    private void Start()
+    {
+         playerSprite = GetComponent<SpriteRenderer>();
+    }
+
     //Update is called once every frame
     void Update()
     {
+
         moveDirection = move.ReadValue<Vector2>();
+        jumpIsPressed = jump.ReadValue<float>();
+
+        //check for rwhen jump button is released. Cannot jmp again until jump button has been pressed again.
+
+        //Debug.Log(jumpIsPressed);
 
         //if the ground check circle overlaps with the ground, the player is grounded (and can jump again)
         if (Physics2D.OverlapCircle(groundCheck.transform.position, groundCheck.transform.localScale.y/2, groundLayer))
@@ -81,7 +103,10 @@ public class PlayerController : MonoBehaviour
             coyoteTimeCounter -= Time.deltaTime;
         }
 
-     
+
+
+
+
 
     }
 
@@ -112,25 +137,51 @@ public class PlayerController : MonoBehaviour
 
         //stores player velocity on current frame so that it can be checked on the next frame
         lastVelocity = rb.velocity;
+
+
+        if (coyoteTimeCounter > 0f && jumpBufferCounter > 0f )
+        {
+            Debug.Log("Jumped");
+            //Debug.Log(jumpIsPressed);
+            rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
+            jumpBufferCounter = 0f;
+        }
+
+        //when jump is pressed, jump.ReadValue<float>() == 1f;
+        if (jumpIsPressed != 1f && rb.velocity.y > 0f)
+        {
+            coyoteTimeCounter = 0f;
+
+            //gives player varied jump height based on how long the jump button is held down
+            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
+        }
+
     }
-
-
 
     private void Jump(InputAction.CallbackContext context)
     {
-        if (context.performed && coyoteTimeCounter > 0f)
+
+        if(context.performed){
+            jumpBufferCounter = jumpBufferTime;
+        }else
         {
-            Debug.Log(coyoteTimeCounter);
-            rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
+            jumpBufferCounter -= Time.deltaTime;
         }
 
-        if (context.canceled && rb.velocity.y > 0f)
+
+        if (context.performed && coyoteTimeCounter > 0f && jumpBufferCounter > 0f)
         {
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
-            coyoteTimeCounter = 0f;
+            //Debug.Log(coyoteTimeCounter);
+            rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
+
+            jumpBufferCounter = 0f;
+
         }
+
 
 
     }
+
+
 
 }
