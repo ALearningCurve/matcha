@@ -145,7 +145,7 @@ public class GunHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(usingMouse);
+        //Debug.Log(usingMouse);
         if (usingMouse)
         {
             mousePos = cam.ScreenToWorldPoint(playerControls.Player.Look.ReadValue<Vector2>());

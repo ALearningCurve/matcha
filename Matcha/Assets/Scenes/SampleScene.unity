@@ -1026,6 +1026,7 @@ MonoBehaviour:
   speed: 15
   jumpHeight: 25
   downGravity: 1
+  fastFallSpeed: 2
   jumpBufferTime: 0.2
   coyoteTime: 0.2
 --- !u!50 &1180904775

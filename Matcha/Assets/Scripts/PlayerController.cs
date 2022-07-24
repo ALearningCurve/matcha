@@ -31,6 +31,8 @@ public class PlayerController : MonoBehaviour
     //controls how much force is added downwards when the player is falling
     [SerializeField] private float downGravity;
 
+    [SerializeField] private float fastFallSpeed;
+
     [Header("Buffer Settings")]
     [SerializeField] private float jumpBufferTime = 0.2f;
     private float jumpBufferCounter;
@@ -154,6 +156,15 @@ public class PlayerController : MonoBehaviour
 
             //gives player varied jump height based on how long the jump button is held down
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
+        }
+
+        Debug.Log(moveDirection.y);
+        //when the player presses down (S Key or down on left stick), they fall faster to the ground.
+        if(moveDirection.y < -0.96f)
+        {
+            
+            Vector2 downVelocity = new Vector2(rb.velocity.x, rb.velocity.y - fastFallSpeed);
+            rb.velocity = downVelocity;
         }
 
     }
