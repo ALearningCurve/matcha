@@ -21,14 +21,28 @@ public class GunHandler : MonoBehaviour
     public PlayerInputActions playerControls;
     private InputAction look;
     private InputAction fire;
+    private InputAction controllerLook;
 
     private Vector2 mousePos;
-    private Vector2 mousePosition;
+
+    private float xBoundary = 15f;
+    private float yBoundary = 9.5f;
+
+    private Vector2 pseudoMouseDir;
+    private Vector2 lookDir;
+    private float angle;
+
+    [SerializeField] private GameObject pseudoMouse;
+    [SerializeField] private float pseudoMouseSensitivity;
+
+    private bool usingMouse;
+
+    //the default colors in unity are only RGBW and CYMK
+    //we can make our own custom colors using Color newColor = new Color(0.3f, 0.4f, 0.6f, 0.3f);
+    //uses (r, g, b, a) or (r, g, b)
+    List<Color> colors = new List<Color>(new[]{Color.red, Color.green, Color.blue, Color.cyan, Color.yellow, Color.magenta, Color.white});
 
 
-    //make a list or array (not sure which is better) that has like 10 or so colors in it. WHen you shoot gun, change color of spriterenderer of gun and bullet to a random color from the list/array;
-    //
-    List<Color> colors = new List<Color>();
 
     private void Awake()
     {
@@ -43,17 +57,17 @@ public class GunHandler : MonoBehaviour
 
         //there is probably a better way of doing this 
         //pls optimize thx
+        /*
         colors.Add(Color.red);
         colors.Add(Color.green);
         colors.Add(Color.blue);
-        colors.Add(Color.red);
         colors.Add(Color.magenta);
         colors.Add(Color.yellow);
         colors.Add(Color.cyan);
         colors.Add(Color.white);
+        */
 
     }
-
 
 
     private void OnEnable()
@@ -76,6 +90,9 @@ public class GunHandler : MonoBehaviour
 
         //these comments are mostly for me because I didn't understand the input system until like just now lmao :)
 
+        controllerLook = playerControls.Player.ControllerLook;
+        controllerLook.Enable();
+        controllerLook.performed += ControllerLook;
 
     }
 
@@ -83,16 +100,21 @@ public class GunHandler : MonoBehaviour
     {
         look.Disable();
         fire.Disable();
+        controllerLook.Disable();
     }
 
-
-
+    
     private void Look(InputAction.CallbackContext context)
     {
-        mousePosition = playerControls.Player.Look.ReadValue<Vector2>();
-        //Debug.Log(mousePosition);
-
+        usingMouse = true;
     }
+
+    
+    private void ControllerLook(InputAction.CallbackContext context)
+    {
+        usingMouse = false;
+    }
+    
 
     private void Fire(InputAction.CallbackContext context)
     {
@@ -100,14 +122,22 @@ public class GunHandler : MonoBehaviour
         Rigidbody2D bulletRB = bullet.GetComponent<Rigidbody2D>();
         bulletRB.AddForce(shootingPoint.transform.up * bulletSpeed, ForceMode2D.Impulse);
 
-
         //Set the SpriteRenderer to the Color defined by the Sliders
         int randomColor = Random.Range(0, colors.Count);
         gunSprite.color = colors[randomColor];
         bulletSprite.color = colors[randomColor];
+    }
 
+    private void flipXFalse()
+    {
+        player.GetComponent<SpriteRenderer>().flipX = false;
+        GetComponent<SpriteRenderer>().flipX = false;
+    }
 
-
+    private void flipXTrue()
+    {
+        player.GetComponent<SpriteRenderer>().flipX = true;
+        GetComponent<SpriteRenderer>().flipX = true;
     }
 
 
@@ -115,39 +145,96 @@ public class GunHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        mousePos = cam.ScreenToWorldPoint(mousePosition);
-
-        //Debug.Log(mousePos);
-
-
-        if(mousePos.x > player.transform.position.x)
+        Debug.Log(usingMouse);
+        if (usingMouse)
         {
-            player.GetComponent<SpriteRenderer>().flipX = false;
-            GetComponent<SpriteRenderer>().flipX = false;
+            mousePos = cam.ScreenToWorldPoint(playerControls.Player.Look.ReadValue<Vector2>());
+
+            pseudoMouse.transform.position = mousePos;
+            
+            if(mousePos.x > player.transform.position.x)
+            {
+                flipXFalse();
+            }
+            if(mousePos.x < player.transform.position.x)
+            {
+                flipXTrue();
+            }
+
+        }
+        else
+        {
+            pseudoMouse.GetComponent<SpriteRenderer>().enabled = true;
+
+            if (pseudoMouse.transform.position.x > player.transform.position.x)
+            {
+                flipXFalse();
+            }
+
+            if (pseudoMouse.transform.position.x < player.transform.position.x)
+            {
+                flipXTrue();
+            }
         }
 
-        if(mousePos.x < player.transform.position.x)
-        {
-            player.GetComponent<SpriteRenderer>().flipX = true;
-            GetComponent<SpriteRenderer>().flipX = true;
-        }
     }
-
+     
     private void FixedUpdate()
     {
         rb.position = player.GetComponent<Rigidbody2D>().position;
 
+        if (usingMouse)
+        {
+            lookDir = mousePos - rb.position;
+        }
+        else //using controller
+        {
+            pseudoMouseDir = controllerLook.ReadValue<Vector2>();
 
-        Vector2 lookDir = mousePos - rb.position;
-        float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
+            float pMouseX = pseudoMouse.transform.position.x;
+            float pMouseY = pseudoMouse.transform.position.y;
+
+            Rigidbody2D pMouseRB = pseudoMouse.GetComponent<Rigidbody2D>();
+
+            //checks if the pseudoMouse is within the bounds of the camera. Uses fixed values so if the camera moves, these numbers have to change.
+            //possible dynamic implementation https://forum.unity.com/threads/how-to-detect-screen-edge-in-unity.109583/
+
+            if (pseudoMouse.transform.position.x >= -16f && pseudoMouse.transform.position.x <= 16f && pseudoMouse.transform.position.y >= -10f && pseudoMouse.transform.position.y <= 10f)
+            {
+                pseudoMouse.GetComponent<Rigidbody2D>().velocity = new Vector2(pseudoMouseDir.x * pseudoMouseSensitivity, pseudoMouseDir.y * pseudoMouseSensitivity);
+            }
+
+            switch (pMouseX)
+            {
+                case < -16f:
+                    pMouseRB.velocity = Vector2.zero;
+                    pseudoMouse.transform.position = new Vector2(-xBoundary + 0.1f, pseudoMouse.transform.position.y);
+                    break;
+                case > 16f:
+                    pMouseRB.velocity = Vector2.zero;
+                    pseudoMouse.transform.position = new Vector2(xBoundary - 0.1f, pseudoMouse.transform.position.y);
+                    break;
+            }
+            switch (pMouseY)
+            {
+                case < -10f:
+                    pMouseRB.velocity = Vector2.zero;
+                    pseudoMouse.transform.position = new Vector2(pseudoMouse.transform.position.x, -yBoundary + 0.1f);
+                    break;
+                case > 10f:
+                    pMouseRB.velocity = Vector2.zero;
+                    pseudoMouse.transform.position = new Vector2(pseudoMouse.transform.position.x, yBoundary - 1f);
+                    break;
+            }
+
+            lookDir = new Vector2(pseudoMouse.transform.position.x, pseudoMouse.transform.position.y) - rb.position;
+            
+        }
+
+        
+        angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
         rb.rotation = angle;
 
-
     }
-
-
-
-
-
 
 }
