@@ -197,6 +197,17 @@
                 },
                 {
                     "name": "",
+                    "id": "a4d32db2-9599-4d22-b46a-a9ac60b4de40",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Fire",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "dfcf9793-2506-4e26-849f-58b2c535ab53",
                     "path": "<Keyboard>/space",
                     "interactions": "",
@@ -210,6 +221,17 @@
                     "name": "",
                     "id": "536ec2ab-1d63-4df4-bed5-d111ad7d9b49",
                     "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5c9d4354-1688-490c-b38d-55c65ed3ede7",
+                    "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",

@@ -9,6 +9,7 @@ public class ChangeColor : MonoBehaviour
             if(collision.gameObject.GetComponent<SpriteRenderer>().color == gameObject.GetComponent<SpriteRenderer>().color)
             {
                 Debug.Log("Hit by same color bullet, MATCHA!");
+                Destroy(gameObject);
             }
             else
             {

@@ -37,10 +37,18 @@ public class GunHandler : MonoBehaviour
 
     private bool usingMouse;
 
+
+    private Color color1 = new Color(1f, 1f, 1f, 1f);
+    private Color color2 = new Color(216f/255f, 94f/255f, 0f, 1f);
+    private Color color3 = new Color(204f/255f, 121f/255f, 167f/255f, 1f);
+    private Color color4 = new Color(0f, 114f/255f, 178f/255f, 1f);
+    private Color color5 = new Color(240f/255f, 228f/255f, 66f/255f, 1f);
+
+    private List<Color> colors;
+
     //the default colors in unity are only RGBW and CYMK
     //we can make our own custom colors using Color newColor = new Color(0.3f, 0.4f, 0.6f, 0.3f);
     //uses (r, g, b, a) or (r, g, b)
-    List<Color> colors = new List<Color>(new[]{Color.red, Color.green, Color.blue, Color.cyan, Color.yellow, Color.magenta, Color.white});
 
 
 
@@ -55,17 +63,8 @@ public class GunHandler : MonoBehaviour
         gunSprite.color = Color.white;
         bulletSprite.color = Color.white;
 
-        //there is probably a better way of doing this 
-        //pls optimize thx
-        /*
-        colors.Add(Color.red);
-        colors.Add(Color.green);
-        colors.Add(Color.blue);
-        colors.Add(Color.magenta);
-        colors.Add(Color.yellow);
-        colors.Add(Color.cyan);
-        colors.Add(Color.white);
-        */
+        colors = new List<Color>(new[] { color1, color2, color3, color4, color5 });
+
 
     }
 
@@ -126,6 +125,7 @@ public class GunHandler : MonoBehaviour
         int randomColor = Random.Range(0, colors.Count);
         gunSprite.color = colors[randomColor];
         bulletSprite.color = colors[randomColor];
+        pseudoMouse.GetComponent<SpriteRenderer>().color = colors[randomColor];
     }
 
     private void flipXFalse()

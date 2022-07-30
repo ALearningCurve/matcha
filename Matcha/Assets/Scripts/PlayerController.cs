@@ -4,6 +4,9 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+
+    [SerializeField] private ParticleSystem dust;
+
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private GameObject bulletPrefab;
 
@@ -11,10 +14,6 @@ public class PlayerController : MonoBehaviour
     [Header("Ground Objects")]
     [SerializeField] private GameObject groundCheck;
     [SerializeField] private LayerMask groundLayer;
-
-    private SpriteRenderer playerSprite;
-
-    private bool isGrounded = false;
 
     private float jumpIsPressed = 0f;
 
@@ -69,11 +68,6 @@ public class PlayerController : MonoBehaviour
         jump.Disable();
     }
 
-    private void Start()
-    {
-         playerSprite = GetComponent<SpriteRenderer>();
-    }
-
     //Update is called once every frame
     void Update()
     {
@@ -81,22 +75,12 @@ public class PlayerController : MonoBehaviour
         moveDirection = move.ReadValue<Vector2>();
         jumpIsPressed = jump.ReadValue<float>();
 
-        //check for rwhen jump button is released. Cannot jmp again until jump button has been pressed again.
+        //check for when jump button is released. Cannot jmp again until jump button has been pressed again.
 
         //Debug.Log(jumpIsPressed);
 
         //if the ground check circle overlaps with the ground, the player is grounded (and can jump again)
         if (Physics2D.OverlapCircle(groundCheck.transform.position, groundCheck.transform.localScale.y/2, groundLayer))
-        {
-            isGrounded = true;
-        }
-        else
-        {
-            isGrounded = false;
-        }
-
-
-        if (isGrounded)
         {
             coyoteTimeCounter = coyoteTime;
         }
@@ -147,6 +131,7 @@ public class PlayerController : MonoBehaviour
             //Debug.Log(jumpIsPressed);
             rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
             jumpBufferCounter = 0f;
+            CreateDust();
         }
 
         //when jump is pressed, jump.ReadValue<float>() == 1f;
@@ -186,11 +171,25 @@ public class PlayerController : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
 
             jumpBufferCounter = 0f;
+            CreateDust();
 
         }
 
 
 
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        {
+            CreateDust();
+        }
+    }
+
+    void CreateDust()
+    {
+        dust.Play();
     }
 
 

@@ -6,4 +6,13 @@ public class HideCursor : MonoBehaviour
     {
         Cursor.visible = false;
     }
+
+    private void Update()
+    {
+        if(Cursor.visible == true)
+        {
+            Cursor.visible = false;
+        }
+    }
+    
 }
