@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class GunHandler : MonoBehaviour
 {
+    private IWeapon weapon;
 
     private SpriteRenderer gunSprite;
     private SpriteRenderer bulletSprite;
@@ -14,7 +15,9 @@ public class GunHandler : MonoBehaviour
 
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject bulletPrefab;
-    [SerializeField] private GameObject shootingPoint;
+
+    // STAYS IN CONTROLLER
+    [SerializeField] protected GameObject shootingPoint;
 
     [SerializeField] private float bulletSpeed = 20f;
 
@@ -25,12 +28,14 @@ public class GunHandler : MonoBehaviour
 
     private Vector2 mousePos;
 
+// STAYS IN CONTROLLER
     private float xBoundary = 15f;
     private float yBoundary = 9.5f;
 
-    private Vector2 pseudoMouseDir;
-    private Vector2 lookDir;
-    private float angle;
+
+            private Vector2 pseudoMouseDir;
+     private Vector2 lookDir;
+     private float angle;
 
     [SerializeField] private GameObject pseudoMouse;
     [SerializeField] private float pseudoMouseSensitivity;
@@ -65,6 +70,7 @@ public class GunHandler : MonoBehaviour
 
         colors = new List<Color>(new[] { color1, color2, color3, color4, color5 });
 
+        this.weapon = new Pistol();
 
     }
 
@@ -75,6 +81,9 @@ public class GunHandler : MonoBehaviour
         look = playerControls.Player.Look;
         look.Enable();
         look.performed += Look;
+
+       
+
 
         //playerControls.Player is the Player action map from the PlayerInputActions in the inspector (see Input folder in the Project panel)
         //playerControls.Player.Fire is the action named Fire from the PlayerInputActions actionmap player
@@ -117,15 +126,20 @@ public class GunHandler : MonoBehaviour
 
     private void Fire(InputAction.CallbackContext context)
     {
-        GameObject bullet = Instantiate(bulletPrefab, shootingPoint.transform.position, shootingPoint.transform.rotation);
-        Rigidbody2D bulletRB = bullet.GetComponent<Rigidbody2D>();
-        bulletRB.AddForce(shootingPoint.transform.up * bulletSpeed, ForceMode2D.Impulse);
+        // GameObject bullet = Instantiate(bulletPrefab, shootingPoint.transform.position, shootingPoint.transform.rotation);
+        // Rigidbody2D bulletRB = bullet.GetComponent<Rigidbody2D>();
+        // bulletRB.AddForce(shootingPoint.transform.up * bulletSpeed, ForceMode2D.Impulse);
 
-        //Set the SpriteRenderer to the Color defined by the Sliders
+        // //Set the SpriteRenderer to the Color defined by the Sliders
         int randomColor = Random.Range(0, colors.Count);
-        gunSprite.color = colors[randomColor];
-        bulletSprite.color = colors[randomColor];
+        // gunSprite.color = colors[randomColor];
+        // bulletSprite.color = colors[randomColor];
         pseudoMouse.GetComponent<SpriteRenderer>().color = colors[randomColor];
+
+
+        this.weapon.shoot(this.shootingPoint);
+
+
     }
 
     private void flipXFalse()
@@ -183,53 +197,54 @@ public class GunHandler : MonoBehaviour
     {
         rb.position = player.GetComponent<Rigidbody2D>().position;
 
+
         if (usingMouse)
         {
             lookDir = mousePos - rb.position;
         }
-        else //using controller
-        {
-            pseudoMouseDir = controllerLook.ReadValue<Vector2>();
+        // else //using controller
+        // {
+        //     pseudoMouseDir = controllerLook.ReadValue<Vector2>();
 
-            float pMouseX = pseudoMouse.transform.position.x;
-            float pMouseY = pseudoMouse.transform.position.y;
+        //     float pMouseX = pseudoMouse.transform.position.x;
+        //     float pMouseY = pseudoMouse.transform.position.y;
 
-            Rigidbody2D pMouseRB = pseudoMouse.GetComponent<Rigidbody2D>();
+        //     Rigidbody2D pMouseRB = pseudoMouse.GetComponent<Rigidbody2D>();
 
-            //checks if the pseudoMouse is within the bounds of the camera. Uses fixed values so if the camera moves, these numbers have to change.
-            //possible dynamic implementation https://forum.unity.com/threads/how-to-detect-screen-edge-in-unity.109583/
+        //     //checks if the pseudoMouse is within the bounds of the camera. Uses fixed values so if the camera moves, these numbers have to change.
+        //     //possible dynamic implementation https://forum.unity.com/threads/how-to-detect-screen-edge-in-unity.109583/
 
-            if (pseudoMouse.transform.position.x >= -16f && pseudoMouse.transform.position.x <= 16f && pseudoMouse.transform.position.y >= -10f && pseudoMouse.transform.position.y <= 10f)
-            {
-                pseudoMouse.GetComponent<Rigidbody2D>().velocity = new Vector2(pseudoMouseDir.x * pseudoMouseSensitivity, pseudoMouseDir.y * pseudoMouseSensitivity);
-            }
+        //     if (pseudoMouse.transform.position.x >= -16f && pseudoMouse.transform.position.x <= 16f && pseudoMouse.transform.position.y >= -10f && pseudoMouse.transform.position.y <= 10f)
+        //     {
+        //         pseudoMouse.GetComponent<Rigidbody2D>().velocity = new Vector2(pseudoMouseDir.x * pseudoMouseSensitivity, pseudoMouseDir.y * pseudoMouseSensitivity);
+        //     }
 
-            switch (pMouseX)
-            {
-                case < -16f:
-                    pMouseRB.velocity = Vector2.zero;
-                    pseudoMouse.transform.position = new Vector2(-xBoundary + 0.1f, pseudoMouse.transform.position.y);
-                    break;
-                case > 16f:
-                    pMouseRB.velocity = Vector2.zero;
-                    pseudoMouse.transform.position = new Vector2(xBoundary - 0.1f, pseudoMouse.transform.position.y);
-                    break;
-            }
-            switch (pMouseY)
-            {
-                case < -10f:
-                    pMouseRB.velocity = Vector2.zero;
-                    pseudoMouse.transform.position = new Vector2(pseudoMouse.transform.position.x, -yBoundary + 0.1f);
-                    break;
-                case > 10f:
-                    pMouseRB.velocity = Vector2.zero;
-                    pseudoMouse.transform.position = new Vector2(pseudoMouse.transform.position.x, yBoundary - 1f);
-                    break;
-            }
+        //     switch (pMouseX)
+        //     {
+        //         case < -16f:
+        //             pMouseRB.velocity = Vector2.zero;
+        //             pseudoMouse.transform.position = new Vector2(-xBoundary + 0.1f, pseudoMouse.transform.position.y);
+        //             break;
+        //         case > 16f:
+        //             pMouseRB.velocity = Vector2.zero;
+        //             pseudoMouse.transform.position = new Vector2(xBoundary - 0.1f, pseudoMouse.transform.position.y);
+        //             break;
+        //     }
+        //     switch (pMouseY)
+        //     {
+        //         case < -10f:
+        //             pMouseRB.velocity = Vector2.zero;
+        //             pseudoMouse.transform.position = new Vector2(pseudoMouse.transform.position.x, -yBoundary + 0.1f);
+        //             break;
+        //         case > 10f:
+        //             pMouseRB.velocity = Vector2.zero;
+        //             pseudoMouse.transform.position = new Vector2(pseudoMouse.transform.position.x, yBoundary - 1f);
+        //             break;
+        //     }
 
-            lookDir = new Vector2(pseudoMouse.transform.position.x, pseudoMouse.transform.position.y) - rb.position;
+        //     lookDir = new Vector2(pseudoMouse.transform.position.x, pseudoMouse.transform.position.y) - rb.position;
             
-        }
+        // }
 
         
         angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;

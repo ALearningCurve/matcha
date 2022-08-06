@@ -143,7 +143,6 @@ public class PlayerController : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
         }
 
-        Debug.Log(moveDirection.y);
         //when the player presses down (S Key or down on left stick), they fall faster to the ground.
         if(moveDirection.y < -0.96f)
         {
