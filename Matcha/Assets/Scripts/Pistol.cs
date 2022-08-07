@@ -8,6 +8,7 @@ public class Pistol : AWeapon
     {
     }
 
+
     private void Awake() {
         this.colors =
             new List<Color>(new [] { color1, color2, color3, color4, color5 });
@@ -15,7 +16,7 @@ public class Pistol : AWeapon
         this.gunSprite = GetComponent<SpriteRenderer>();
         this.gunSprite.color = Color.white;
 
-        this.bulletSprite = bulletPrefabulous.GetComponent<SpriteRenderer>();
+        //this.bulletSprite = bulletPrefabulous.GetComponent<SpriteRenderer>();
         this.bulletSprite.color = Color.white;
 
         // add something to do bulletprefab in code
@@ -23,10 +24,10 @@ public class Pistol : AWeapon
 
     }
 
-    public override void shoot(GameObject shootingPoint)
+    public override void shoot(GameObject shootingPoint, GameObject bulletPrefabulous)
     {
         GameObject bullet =
-            Instantiate(this.bulletPrefabulous,
+            Instantiate(bulletPrefabulous,
             shootingPoint.transform.position,
             shootingPoint.transform.rotation);
 
