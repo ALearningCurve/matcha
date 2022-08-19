@@ -178,7 +178,7 @@ public class GunHandler : MonoBehaviour
         }
         else
         {
-            pseudoMouse.GetComponent<SpriteRenderer>().enabled = true;
+            //pseudoMouse.GetComponent<SpriteRenderer>().enabled = true;
 
             if (pseudoMouse.transform.position.x > player.transform.position.x)
             {
