@@ -9,9 +9,6 @@ public abstract class AWeapon : MonoBehaviour, IWeapon
     protected SpriteRenderer bulletSprite;
 
     [SerializeField]
-    protected GameObject bulletPrefabulous;
-
-    [SerializeField]
     protected float bulletSpeed;
 
     protected Color color1 = new Color(1f, 1f, 1f, 1f);
@@ -28,7 +25,7 @@ public abstract class AWeapon : MonoBehaviour, IWeapon
 
     protected List<Color> colors;
 
-    public abstract void shoot(GameObject shootingPoint);
+    public abstract void shoot(GameObject shootingPoint, GameObject bulletPrefab);
 
     public void reload()
     {

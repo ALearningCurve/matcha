@@ -137,7 +137,7 @@ public class GunHandler : MonoBehaviour
         pseudoMouse.GetComponent<SpriteRenderer>().color = colors[randomColor];
 
 
-        this.weapon.shoot(this.shootingPoint);
+        this.weapon.shoot(this.shootingPoint, this.bulletPrefab);
 
 
     }
