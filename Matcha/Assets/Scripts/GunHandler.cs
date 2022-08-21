@@ -5,7 +5,8 @@ using UnityEngine.InputSystem;
 
 public class GunHandler : MonoBehaviour
 {
-    private IWeapon weapon;
+    public IWeapon weapon; //This needs to be public so that the SwapWeapon script can access it because the weapon swap should occur when the player touches a gun, not when the gun 
+    //it was private before, so is it bad that this is public? 
 
     private Color nextColor;
 
@@ -21,8 +22,6 @@ public class GunHandler : MonoBehaviour
     // STAYS IN CONTROLLER
     [SerializeField] protected GameObject shootingPoint;
 
-    [SerializeField] private float bulletSpeed = 20f;
-
     public PlayerInputActions playerControls;
     private InputAction look;
     private InputAction fire;
@@ -31,16 +30,17 @@ public class GunHandler : MonoBehaviour
     private Vector2 mousePos;
 
 // STAYS IN CONTROLLER
-    private float xBoundary = 15f;
-    private float yBoundary = 9.5f;
+    //private float xBoundary = 15f;
+    //private float yBoundary = 9.5f;
 
 
-            private Vector2 pseudoMouseDir;
+    //private Vector2 crosshairDir;
      private Vector2 lookDir;
      private float angle;
 
-    [SerializeField] private GameObject pseudoMouse;
-    [SerializeField] private float pseudoMouseSensitivity;
+    [SerializeField] private GameObject crosshair;
+    //[SerializeField] private float crosshairSensitivity;
+    [SerializeField] private GameObject arrow;
 
     private bool usingMouse;
 
@@ -73,8 +73,13 @@ public class GunHandler : MonoBehaviour
         colors = new List<Color>(new[] { color1, color2, color3, color4, color5 });
 
         this.weapon = new Sniper();
+
+
+
+
         this.nextColor = colors[Random.Range(0, colors.Count)];
-        pseudoMouse.GetComponent<SpriteRenderer>().color = nextColor;
+        crosshair.GetComponent<SpriteRenderer>().color = nextColor;
+        arrow.GetComponent<SpriteRenderer>().color = nextColor;
 
     }
 
@@ -145,7 +150,8 @@ public class GunHandler : MonoBehaviour
 
         Color color = colors[randomColor];
         this.nextColor = color;
-        pseudoMouse.GetComponent<SpriteRenderer>().color = color;
+        crosshair.GetComponent<SpriteRenderer>().color = color;
+        arrow.GetComponent<SpriteRenderer>().color = color;
 
     }
 
@@ -171,7 +177,7 @@ public class GunHandler : MonoBehaviour
         {
             mousePos = cam.ScreenToWorldPoint(playerControls.Player.Look.ReadValue<Vector2>());
 
-            pseudoMouse.transform.position = mousePos;
+            crosshair.transform.position = mousePos;
             
             if(mousePos.x > player.transform.position.x)
             {
@@ -185,14 +191,14 @@ public class GunHandler : MonoBehaviour
         }
         else
         {
-            pseudoMouse.GetComponent<SpriteRenderer>().enabled = true;
+            crosshair.GetComponent<SpriteRenderer>().enabled = true;
 
-            if (pseudoMouse.transform.position.x > player.transform.position.x)
+            if (crosshair.transform.position.x > player.transform.position.x)
             {
                 flipXFalse();
             }
 
-            if (pseudoMouse.transform.position.x < player.transform.position.x)
+            if (crosshair.transform.position.x < player.transform.position.x)
             {
                 flipXTrue();
             }
@@ -211,45 +217,45 @@ public class GunHandler : MonoBehaviour
         }
         // else //using controller
         // {
-        //     pseudoMouseDir = controllerLook.ReadValue<Vector2>();
+        //     crosshairDir = controllerLook.ReadValue<Vector2>();
 
-        //     float pMouseX = pseudoMouse.transform.position.x;
-        //     float pMouseY = pseudoMouse.transform.position.y;
+        //     float pMouseX = crosshair.transform.position.x;
+        //     float pMouseY = crosshair.transform.position.y;
 
-        //     Rigidbody2D pMouseRB = pseudoMouse.GetComponent<Rigidbody2D>();
+        //     Rigidbody2D pMouseRB = crosshair.GetComponent<Rigidbody2D>();
 
-        //     //checks if the pseudoMouse is within the bounds of the camera. Uses fixed values so if the camera moves, these numbers have to change.
+        //     //checks if the crosshair is within the bounds of the camera. Uses fixed values so if the camera moves, these numbers have to change.
         //     //possible dynamic implementation https://forum.unity.com/threads/how-to-detect-screen-edge-in-unity.109583/
 
-        //     if (pseudoMouse.transform.position.x >= -16f && pseudoMouse.transform.position.x <= 16f && pseudoMouse.transform.position.y >= -10f && pseudoMouse.transform.position.y <= 10f)
+        //     if (crosshair.transform.position.x >= -16f && crosshair.transform.position.x <= 16f && crosshair.transform.position.y >= -10f && crosshair.transform.position.y <= 10f)
         //     {
-        //         pseudoMouse.GetComponent<Rigidbody2D>().velocity = new Vector2(pseudoMouseDir.x * pseudoMouseSensitivity, pseudoMouseDir.y * pseudoMouseSensitivity);
+        //         crosshair.GetComponent<Rigidbody2D>().velocity = new Vector2(crosshairDir.x * crosshairSensitivity, crosshairDir.y * crosshairSensitivity);
         //     }
 
         //     switch (pMouseX)
         //     {
         //         case < -16f:
         //             pMouseRB.velocity = Vector2.zero;
-        //             pseudoMouse.transform.position = new Vector2(-xBoundary + 0.1f, pseudoMouse.transform.position.y);
+        //             crosshair.transform.position = new Vector2(-xBoundary + 0.1f, crosshair.transform.position.y);
         //             break;
         //         case > 16f:
         //             pMouseRB.velocity = Vector2.zero;
-        //             pseudoMouse.transform.position = new Vector2(xBoundary - 0.1f, pseudoMouse.transform.position.y);
+        //             crosshair.transform.position = new Vector2(xBoundary - 0.1f, crosshair.transform.position.y);
         //             break;
         //     }
         //     switch (pMouseY)
         //     {
         //         case < -10f:
         //             pMouseRB.velocity = Vector2.zero;
-        //             pseudoMouse.transform.position = new Vector2(pseudoMouse.transform.position.x, -yBoundary + 0.1f);
+        //             crosshair.transform.position = new Vector2(crosshair.transform.position.x, -yBoundary + 0.1f);
         //             break;
         //         case > 10f:
         //             pMouseRB.velocity = Vector2.zero;
-        //             pseudoMouse.transform.position = new Vector2(pseudoMouse.transform.position.x, yBoundary - 1f);
+        //             crosshair.transform.position = new Vector2(crosshair.transform.position.x, yBoundary - 1f);
         //             break;
         //     }
 
-        //     lookDir = new Vector2(pseudoMouse.transform.position.x, pseudoMouse.transform.position.y) - rb.position;
+        //     lookDir = new Vector2(crosshair.transform.position.x, crosshair.transform.position.y) - rb.position;
             
         // }
 

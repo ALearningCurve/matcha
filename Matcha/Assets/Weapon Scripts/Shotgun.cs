@@ -7,13 +7,8 @@ public class Shotgun : MonoBehaviour, IWeapon
     
     protected float bulletSpeed = 20f;
 
-    protected List<Color> colors = new List<Color>(new [] { 
-        new Color(1f, 1f, 1f, 1f), 
-        new Color(216f / 255f, 94f / 255f, 0f, 1f), 
-        new Color(204f / 255f, 121f / 255f, 167f / 255f, 1f),
-        new Color(0f, 114f / 255f, 178f / 255f, 1f), 
-        new Color(240f / 255f, 228f / 255f, 66f / 255f, 1f) });
-    
+    // I don't think "public Shotgun(){}" is doing anything but it is giving a yellow warning sign in the console,
+    // this kinda explains it https://answers.unity.com/questions/653904/you-are-trying-to-create-a-monobehaviour-using-the-2.html\
     public Shotgun() {}
     
     

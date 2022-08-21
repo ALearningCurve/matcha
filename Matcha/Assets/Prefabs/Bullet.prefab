@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 1452483470842288629}
   - component: {fileID: 871074053705177109}
   - component: {fileID: -4766142513346484255}
+  - component: {fileID: 4670241720056681838}
+  - component: {fileID: 7484857934198799516}
   - component: {fileID: 5932511924489098237}
   m_Layer: 0
   m_Name: Bullet
@@ -138,6 +140,31 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.25
+--- !u!114 &4670241720056681838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7610430546409506716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78e1a1ff28a3ca44ebf40f02c53da414, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isBBBullet: 0
+--- !u!114 &7484857934198799516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7610430546409506716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67c790f06d240aa4c89b12846d7a2f77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!96 &5932511924489098237
 TrailRenderer:
   serializedVersion: 2
