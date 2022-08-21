@@ -7,6 +7,8 @@ public class GunHandler : MonoBehaviour
 {
     private IWeapon weapon;
 
+    private Color nextColor;
+
     private SpriteRenderer gunSprite;
     private SpriteRenderer bulletSprite;
 
@@ -70,7 +72,9 @@ public class GunHandler : MonoBehaviour
 
         colors = new List<Color>(new[] { color1, color2, color3, color4, color5 });
 
-        this.weapon = new Pistol();
+        this.weapon = new Sniper();
+        this.nextColor = colors[Random.Range(0, colors.Count)];
+        pseudoMouse.GetComponent<SpriteRenderer>().color = nextColor;
 
     }
 
@@ -134,11 +138,14 @@ public class GunHandler : MonoBehaviour
         int randomColor = Random.Range(0, colors.Count);
         // gunSprite.color = colors[randomColor];
         // bulletSprite.color = colors[randomColor];
-        pseudoMouse.GetComponent<SpriteRenderer>().color = colors[randomColor];
+        
 
 
-        this.weapon.shoot(this.shootingPoint, this.bulletPrefab);
+        this.weapon.shoot(this.shootingPoint, this.bulletPrefab, this.nextColor);
 
+        Color color = colors[randomColor];
+        this.nextColor = color;
+        pseudoMouse.GetComponent<SpriteRenderer>().color = color;
 
     }
 
