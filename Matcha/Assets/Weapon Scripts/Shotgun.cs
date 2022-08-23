@@ -15,12 +15,21 @@ public class Shotgun : MonoBehaviour, IWeapon
     public void shoot(GameObject shootingPoint, GameObject bulletPrefab, Color color)
     {
         GameObject bullet1 = Instantiate(bulletPrefab, shootingPoint.transform.position 
-                                                       + new Vector3(0f, 1f, 0f), shootingPoint.transform.rotation);
-        GameObject bullet2 = Instantiate(bulletPrefab, shootingPoint.transform.position 
                                                        + new Vector3(0f, 0f, 0f), shootingPoint.transform.rotation);
+        GameObject bullet2 = Instantiate(bulletPrefab, shootingPoint.transform.position 
+                                                       + new Vector3(0f, .3f, 0f), shootingPoint.transform.rotation);
         GameObject bullet3 = Instantiate(bulletPrefab, shootingPoint.transform.position 
-                                                       + new Vector3(0f, -1f, 0f), shootingPoint.transform.rotation);
-        
+                                                       + new Vector3(0f, -.3f, 0f), shootingPoint.transform.rotation);
+
+        bullet1.transform.localScale = new Vector3(.7f, .7f, .7f);
+        bullet1.GetComponent<TrailRenderer>().widthMultiplier = 0.7f;
+
+        bullet2.transform.localScale = new Vector3(.7f, .7f, .7f);
+        bullet2.GetComponent<TrailRenderer>().widthMultiplier = 0.7f;
+
+        bullet3.transform.localScale = new Vector3(.7f, .7f, .7f);
+        bullet3.GetComponent<TrailRenderer>().widthMultiplier = 0.7f;
+
         Rigidbody2D bulletRB1 = bullet1.GetComponent<Rigidbody2D>();
         Rigidbody2D bulletRB2 = bullet2.GetComponent<Rigidbody2D>();
         Rigidbody2D bulletRB3 = bullet3.GetComponent<Rigidbody2D>();

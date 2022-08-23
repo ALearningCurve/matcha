@@ -2,24 +2,117 @@ using UnityEngine;
 
 public class BulletHit : MonoBehaviour
 {
-    //prevents bullets from travelling forever which will slow down the game. 30 is an arbitrary number
-    [SerializeField] private float maxBulletDistance = 30f;
 
-    void Update()
+    [SerializeField] private GameObject splatPrefab;
+
+    private bool bulletHasBounced = false;
+
+    [SerializeField] private GameObject MATCHAprefab;
+
+    private void createSplat()
     {
-        //Debug.Log(GetComponent<Rigidbody2D>().velocity);
-        if(transform.position.x > maxBulletDistance || transform.position.x < -maxBulletDistance || transform.position.y > maxBulletDistance || transform.position.y < -maxBulletDistance)
-        {
-            Destroy(gameObject);
-        }
+        GameObject paintSplat = Instantiate(splatPrefab, transform.position, Quaternion.identity);
+        paintSplat.GetComponent<SpriteRenderer>().color = GetComponent<SpriteRenderer>().color;
+        paintSplat.transform.localScale = gameObject.transform.localScale;
+    }
+    
+    private void createMatcha()
+    {
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision){
 
-        if(collision.gameObject.tag != "Mirror" && collision.gameObject.tag != "Bullet"){
-            //Destroys the bullet when it collides with something that has a 2D collider that isn't a mirror
+
+        //switch (collision.gameObject.tag)
+        //{
+        //    case null:
+        //        break;
+
+        //    case "Player":
+        //        if (bulletHasBounced)
+        //        {
+
+        //        }
+        //        break;
+        //}
+
+
+
+        //this below code works in making the shotgun not kill you instantly if you aim up, however if the bullets hit each other, then you can get hit by one of the bullets instantly when you shoot up
+        //this has an issue where if a bullet hit's a player before bouncing off of something, the bullet will bounce off of the player. this will not be good for multiplayer
+        if(collision.gameObject.tag != null && collision.gameObject.tag != "Player")
+        {
+            bulletHasBounced = true;
+        }
+
+        if(collision.gameObject.tag == "Player" && bulletHasBounced == true)
+        {
+            Color bulletColor = GetComponent<SpriteRenderer>().color;
+
+            if (bulletColor == collision.gameObject.GetComponent<SpriteRenderer>().color)
+            {
+
+
+                Debug.Log("Hit by same color bullet, MATCHA!");
+                GameObject matcha = Instantiate(MATCHAprefab, transform.position + new Vector3(0f, 0f, -1.8f), Quaternion.identity);
+                matcha.GetComponent<SpriteRenderer>().color = new Color(bulletColor.r, bulletColor.g, bulletColor.b, 1f);
+
+
+            }
+            else
+            {
+                Debug.Log("hit by different color");
+                collision.gameObject.GetComponent<SpriteRenderer>().color = GetComponent<SpriteRenderer>().color;
+            }
+            createSplat();
             Destroy(gameObject);
         }
+
+
+
+        if (collision.gameObject.tag == "Ground")
+        {
+            createSplat();
+            Destroy(gameObject);
+        }
+
+
+        /*we shoot the bullet
+         * 
+         * if the bullet hits the player and the bullet has not bounced off of another object, the bullet does not kill
+         * 
+         * if the bullet hits the player and has bounced off of another object, the bullet does kill
+         * 
+         * if the bullet hits an object that has the ground tag, the bullet will be destroyed
+         * 
+         * 
+         * fuck
+         * 
+         * the change color script needs to be changed too for this to work
+         * god diddly damm it
+         * 
+         * 
+         
+
+        if (collision.gameObject.tag != "Player")
+        {
+            bulletHasBounced = true;
+        }
+
+        if(collision.gameObject.tag != "Mirror" && collision.gameObject.tag != "Bullet" || collision.gameObject.tag == "Player" && bulletHasBounced)
+        {
+
+            
+            GameObject paintSplat = Instantiate(splatPrefab, transform.position, Quaternion.identity);
+            paintSplat.GetComponent<SpriteRenderer>().color = GetComponent<SpriteRenderer>().color;
+            paintSplat.transform.localScale = gameObject.transform.localScale;
+            
+            //Destroys the bullet when it collides with something that has a 2D collider that isn't a mirror or a bullet
+            Destroy(gameObject);
+
+        }
+        */
     }
 
 }

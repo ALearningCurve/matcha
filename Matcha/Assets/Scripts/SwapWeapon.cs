@@ -5,7 +5,7 @@ using UnityEngine;
 public class SwapWeapon : MonoBehaviour
 {
     [SerializeField] private GameObject gun;
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         switch (collision.gameObject.tag)
         {
