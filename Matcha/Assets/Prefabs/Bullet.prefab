@@ -103,6 +103,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   splatPrefab: {fileID: 1357935909010985263, guid: a75018b7a69edd04ca090e376d03b1b7, type: 3}
+  bulletSpriteRenderer: {fileID: 2801100365717998353}
   MATCHAprefab: {fileID: 7007325212077709147, guid: 36a0ad61c122ca4488671e07aca5fdbf, type: 3}
 --- !u!114 &4670241720056681838
 MonoBehaviour:
@@ -116,6 +117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78e1a1ff28a3ca44ebf40f02c53da414, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trailRenderer: {fileID: 5932511924489098237}
   isBBBullet: 0
 --- !u!114 &7484857934198799516
 MonoBehaviour:
@@ -129,6 +131,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67c790f06d240aa4c89b12846d7a2f77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 2801100365717998353}
+  trailRenderer: {fileID: 5932511924489098237}
 --- !u!50 &871074053705177109
 Rigidbody2D:
   serializedVersion: 4

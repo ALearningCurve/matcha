@@ -4,14 +4,20 @@ using UnityEngine;
 
 public class ChangeTrailColor : MonoBehaviour
 {
+
+
+    [SerializeField] private SpriteRenderer spriteRenderer;
+
+    [SerializeField] private TrailRenderer trailRenderer;
+
     void Update()
     {
-        Color spriteColor = GetComponent<SpriteRenderer>().color;
+        Color spriteColor = spriteRenderer.color;
 
         Color newStartColor = new Color(spriteColor.r, spriteColor.g, spriteColor.b, 170f);
-        GetComponent<TrailRenderer>().startColor = newStartColor;
+        trailRenderer.startColor = newStartColor;
 
         Color newEndColor = new Color(spriteColor.r, spriteColor.g, spriteColor.b, 0f);
-        GetComponent<TrailRenderer>().endColor = newEndColor;
+        trailRenderer.endColor = newEndColor;
     }
 }

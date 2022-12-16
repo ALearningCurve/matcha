@@ -68,6 +68,7 @@ public class PlayerController : MonoBehaviour
         jump.Disable();
     }
 
+    
     //Update is called once every frame
     void Update()
     {
@@ -88,11 +89,6 @@ public class PlayerController : MonoBehaviour
         {
             coyoteTimeCounter -= Time.deltaTime;
         }
-
-
-
-
-
 
     }
 

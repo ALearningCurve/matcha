@@ -5,6 +5,8 @@ public class BulletHit : MonoBehaviour
 
     [SerializeField] private GameObject splatPrefab;
 
+    [SerializeField] private SpriteRenderer bulletSpriteRenderer;
+
     private bool bulletHasBounced = false;
 
     [SerializeField] private GameObject MATCHAprefab;
@@ -12,12 +14,14 @@ public class BulletHit : MonoBehaviour
     private void createSplat()
     {
         GameObject paintSplat = Instantiate(splatPrefab, transform.position, Quaternion.identity);
-        paintSplat.GetComponent<SpriteRenderer>().color = GetComponent<SpriteRenderer>().color;
+        paintSplat.GetComponent<SpriteRenderer>().color = bulletSpriteRenderer.color;
         paintSplat.transform.localScale = gameObject.transform.localScale;
     }
     
-    private void createMatcha()
+    private void createMatcha(Color bulletColor)
     {
+        GameObject matcha = Instantiate(MATCHAprefab, transform.position + new Vector3(0f, 0f, -1.8f), Quaternion.identity);
+        matcha.GetComponent<SpriteRenderer>().color = new Color(bulletColor.r, bulletColor.g, bulletColor.b, 1f);
 
     }
 
@@ -41,33 +45,63 @@ public class BulletHit : MonoBehaviour
 
         //this below code works in making the shotgun not kill you instantly if you aim up, however if the bullets hit each other, then you can get hit by one of the bullets instantly when you shoot up
         //this has an issue where if a bullet hit's a player before bouncing off of something, the bullet will bounce off of the player. this will not be good for multiplayer
-        if(collision.gameObject.tag != null && collision.gameObject.tag != "Player")
+        /*if(collision.gameObject.tag != null && collision.gameObject.tag != "Player")
+        {
+            bulletHasBounced = true;
+        }*/
+
+        if (collision.gameObject.tag == "Mirror")
         {
             bulletHasBounced = true;
         }
 
-        if(collision.gameObject.tag == "Player" && bulletHasBounced == true)
+
+        if (collision.gameObject.tag == "Player" && bulletHasBounced == true)
         {
-            Color bulletColor = GetComponent<SpriteRenderer>().color;
+            Color bulletColor = bulletSpriteRenderer.color;
 
             if (bulletColor == collision.gameObject.GetComponent<SpriteRenderer>().color)
             {
 
 
                 Debug.Log("Hit by same color bullet, MATCHA!");
-                GameObject matcha = Instantiate(MATCHAprefab, transform.position + new Vector3(0f, 0f, -1.8f), Quaternion.identity);
-                matcha.GetComponent<SpriteRenderer>().color = new Color(bulletColor.r, bulletColor.g, bulletColor.b, 1f);
+                createMatcha(bulletColor);
 
 
             }
             else
             {
                 Debug.Log("hit by different color");
-                collision.gameObject.GetComponent<SpriteRenderer>().color = GetComponent<SpriteRenderer>().color;
+                collision.gameObject.GetComponent<SpriteRenderer>().color = bulletSpriteRenderer.color;
             }
             createSplat();
             Destroy(gameObject);
         }
+
+        if(collision.gameObject.tag == "Enemy")
+        {
+
+            Color bulletColor = bulletSpriteRenderer.color;
+
+
+            if (bulletColor == collision.gameObject.GetComponent<SpriteRenderer>().color)
+            {
+
+
+                Debug.Log("Hit by same color bullet, MATCHA!");
+                createMatcha(bulletColor);
+
+                collision.gameObject.SetActive(false);
+            }
+            else
+            {
+                Debug.Log("hit by different color");
+                collision.gameObject.GetComponent<SpriteRenderer>().color = bulletSpriteRenderer.color;
+            }
+            createSplat();
+            Destroy(gameObject);
+        }
+
 
 
 

@@ -12,6 +12,7 @@ TagManager:
   - Pistol
   - BigBoy
   - BurstShot
+  - Enemy
   layers:
   - Default
   - TransparentFX

@@ -12,10 +12,11 @@ GameObject:
   - component: {fileID: 761632242979467473}
   - component: {fileID: 8771309372764157421}
   - component: {fileID: -3828614999781139652}
-  - component: {fileID: -3991714916368619326}
+  - component: {fileID: 6640423578808061206}
+  - component: {fileID: 8580337691347087893}
   m_Layer: 10
   m_Name: Temp Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -124,7 +125,7 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 1, y: 2}
   m_Direction: 0
---- !u!114 &-3991714916368619326
+--- !u!114 &6640423578808061206
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -133,6 +134,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 3881253181445356754}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df17304e66357544ca6223405e577d14, type: 3}
+  m_Script: {fileID: 11500000, guid: a7c5818a8df90d74688a25c76d1c4ff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  theColors: {fileID: 11400000, guid: 071675ee25c8ac44192058a605a2bcd5, type: 2}
+  enemySpriteRenderer: {fileID: 761632242979467473}
+--- !u!114 &8580337691347087893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3881253181445356754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ac0de289f630e44d8a0a16a66491d0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemySpriteRenderer: {fileID: 761632242979467473}

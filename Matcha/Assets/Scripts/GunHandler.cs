@@ -10,7 +10,7 @@ public class GunHandler : MonoBehaviour
 
     private Color nextColor;
 
-    private SpriteRenderer gunSprite;
+    [SerializeField] private SpriteRenderer gunSprite;
     private SpriteRenderer bulletSprite;
 
     [SerializeField] private Rigidbody2D rb;
@@ -18,6 +18,8 @@ public class GunHandler : MonoBehaviour
 
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject bulletPrefab;
+
+    
 
     // STAYS IN CONTROLLER
     [SerializeField] protected GameObject shootingPoint;
@@ -40,48 +42,45 @@ public class GunHandler : MonoBehaviour
 
     [SerializeField] private GameObject crosshair;
     //[SerializeField] private float crosshairSensitivity;
-    [SerializeField] private GameObject arrow;
+    [SerializeField] private SpriteRenderer crosshairSpriteRenderer;
+    [SerializeField] private SpriteRenderer arrowSpriteRenderer;
 
     private bool usingMouse;
-
-
-    private Color color1 = new Color(1f, 1f, 1f, 1f);
-    private Color color2 = new Color(216f/255f, 94f/255f, 0f, 1f);
-    private Color color3 = new Color(204f/255f, 121f/255f, 167f/255f, 1f);
-    private Color color4 = new Color(0f, 114f/255f, 178f/255f, 1f);
-    private Color color5 = new Color(240f/255f, 228f/255f, 66f/255f, 1f);
-
-    private List<Color> colors;
 
     //the default colors in unity are only RGBW and CYMK
     //we can make our own custom colors using Color newColor = new Color(0.3f, 0.4f, 0.6f, 0.3f);
     //uses (r, g, b, a) or (r, g, b)
 
 
+    [SerializeField] private ColorList theColors;
+
 
     private void Awake()
     {
         //we create a variable called playerControls which is equal to a new instance of the PlayerInputActions asset that we created in the inspector
         playerControls = new PlayerInputActions();
-        rb = GetComponent<Rigidbody2D>();
-        gunSprite = GetComponent<SpriteRenderer>();
+        
         bulletSprite = bulletPrefab.GetComponent<SpriteRenderer>();
 
+        bulletSprite.color = Color.white;
         gunSprite.color = Color.white;
         bulletSprite.color = Color.white;
 
-        colors = new List<Color>(new[] { color1, color2, color3, color4, color5 });
-
-        this.weapon = new Sniper();
+        this.weapon = new Pistol();
 
 
+        int randomColor = Random.Range(0, theColors.colors.Count);
 
 
-        this.nextColor = colors[Random.Range(0, colors.Count)];
-        crosshair.GetComponent<SpriteRenderer>().color = nextColor;
-        arrow.GetComponent<SpriteRenderer>().color = nextColor;
+        Color color = theColors.colors[randomColor];
+        this.nextColor = color;
+        crosshair.GetComponent<SpriteRenderer>().color = color;
+        arrowSpriteRenderer.color = color;
 
     }
+
+
+
 
 
     private void OnEnable()
@@ -131,7 +130,7 @@ public class GunHandler : MonoBehaviour
     {
         usingMouse = false;
     }
-    
+
 
     private void Fire(InputAction.CallbackContext context)
     {
@@ -140,7 +139,7 @@ public class GunHandler : MonoBehaviour
         // bulletRB.AddForce(shootingPoint.transform.up * bulletSpeed, ForceMode2D.Impulse);
 
         // //Set the SpriteRenderer to the Color defined by the Sliders
-        int randomColor = Random.Range(0, colors.Count);
+        int randomColor = Random.Range(0, theColors.colors.Count);
         // gunSprite.color = colors[randomColor];
         // bulletSprite.color = colors[randomColor];
         
@@ -148,10 +147,11 @@ public class GunHandler : MonoBehaviour
 
         this.weapon.shoot(this.shootingPoint, this.bulletPrefab, this.nextColor);
 
-        Color color = colors[randomColor];
+        Color color = theColors.colors[randomColor];
         this.nextColor = color;
-        crosshair.GetComponent<SpriteRenderer>().color = color;
-        arrow.GetComponent<SpriteRenderer>().color = color;
+        crosshairSpriteRenderer.color = color;
+        arrowSpriteRenderer.color = color;
+        gunSprite.color = color;
 
     }
 
@@ -188,10 +188,10 @@ public class GunHandler : MonoBehaviour
                 flipXTrue();
             }
 
-        }
+        }/*
         else
         {
-            crosshair.GetComponent<SpriteRenderer>().enabled = true;
+            crosshairSpriteRenderer.enabled = true;
 
             if (crosshair.transform.position.x > player.transform.position.x)
             {
@@ -202,7 +202,7 @@ public class GunHandler : MonoBehaviour
             {
                 flipXTrue();
             }
-        }
+        }*/
 
     }
      
@@ -214,7 +214,10 @@ public class GunHandler : MonoBehaviour
         if (usingMouse)
         {
             lookDir = mousePos - rb.position;
+
+            //Debug.Log(controllerLook.ReadValue<Vector2>());
         }
+
         // else //using controller
         // {
         //     crosshairDir = controllerLook.ReadValue<Vector2>();
