@@ -56,7 +56,7 @@ public class SwapWeapon : MonoBehaviour
                 break;
 
 
-            case "BigBoy":
+            case "ExpandingBullet":
                 gunHandler.weapon = new BigBoy();
                 break;
 

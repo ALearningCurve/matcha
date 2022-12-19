@@ -17,7 +17,7 @@ public class BigBoy : MonoBehaviour, IWeapon
         bullet.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f); //makes bullet smaller
         bullet.GetComponent<TrailRenderer>().widthMultiplier = 0.5f; // maker trail renderer for bullet smaller to match the bullet size
 
-        bullet.GetComponent<BigBoyBullet>().isBBBullet = true;
+        bullet.GetComponent<ExpandingBullet>().isExpandingBullet = true;
 
         Rigidbody2D bulletRB = bullet.GetComponent<Rigidbody2D>();
 

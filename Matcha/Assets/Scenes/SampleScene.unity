@@ -99965,7 +99965,7 @@ GameObject:
   - component: {fileID: 2062733890}
   m_Layer: 0
   m_Name: Matcha Expanding Bullet Gun
-  m_TagString: BigBoy
+  m_TagString: ExpandingBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

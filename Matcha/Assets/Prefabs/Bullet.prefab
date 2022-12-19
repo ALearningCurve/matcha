@@ -118,7 +118,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trailRenderer: {fileID: 5932511924489098237}
-  isBBBullet: 0
+  isExpandingBullet: 0
 --- !u!114 &7484857934198799516
 MonoBehaviour:
   m_ObjectHideFlags: 0
