@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 //pls change the name to "Expanding Bullet" ty :)
-public class BigBoy : MonoBehaviour, IWeapon
+public class ExpandingBullet : MonoBehaviour, IWeapon
 {
 
     protected float bulletSpeed = 2f;
@@ -17,7 +17,7 @@ public class BigBoy : MonoBehaviour, IWeapon
         bullet.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f); //makes bullet smaller
         bullet.GetComponent<TrailRenderer>().widthMultiplier = 0.5f; // maker trail renderer for bullet smaller to match the bullet size
 
-        bullet.GetComponent<ExpandingBullet>().isExpandingBullet = true;
+        bullet.GetComponent<ExpandBullet>().isExpandingBullet = true;
 
         Rigidbody2D bulletRB = bullet.GetComponent<Rigidbody2D>();
 

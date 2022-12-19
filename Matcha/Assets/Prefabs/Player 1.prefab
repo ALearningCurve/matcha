@@ -609,7 +609,10 @@ MonoBehaviour:
   rb: {fileID: 5428302904304538038}
   cam: {fileID: 0}
   player: {fileID: 7186490745380972511}
+  playerRB: {fileID: 7186490745380972507}
+  playerSpriteRenderer: {fileID: 7186490745380972500}
   bulletPrefab: {fileID: 7610430546409506716, guid: 2030c7ffafa44e64f8273238c8b55a1e, type: 3}
+  crosshairSprite: {fileID: 0}
   shootingPoint: {fileID: 7186490745936276207}
   crosshair: {fileID: 7186490744176251433}
   crosshairSpriteRenderer: {fileID: 7186490744176251435}

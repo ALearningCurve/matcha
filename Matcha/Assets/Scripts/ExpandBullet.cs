@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ExpandingBullet : MonoBehaviour
+public class ExpandBullet : MonoBehaviour
 {
     [SerializeField] private TrailRenderer trailRenderer;
 
