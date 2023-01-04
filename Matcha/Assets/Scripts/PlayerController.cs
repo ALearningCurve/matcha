@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private GameObject bulletPrefab;
 
+    [SerializeField] private Animator animator;
 
     [Header("Ground Objects")]
     [SerializeField] private GameObject groundCheck;
@@ -107,7 +108,14 @@ public class PlayerController : MonoBehaviour
         //this is the line of code that actually moves the player
         //also prevents some forces from affecting the player when not moving because movedirection = 0 when not moving;
         rb.velocity = new Vector2(moveDirection.x * speed, rb.velocity.y);
-
+        if(rb.velocity.x != 0)
+        {
+            animator.SetBool("IsWalking", true);
+        }
+        else
+        {
+            animator.SetBool("IsWalking", false);
+        }
 
         //if your current y velocity is less than your y velocity on the last frame (falling), add gravity
         //this makes the jump feel a lot better (less floaty)

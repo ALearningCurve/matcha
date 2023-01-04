@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+//EVERY GUN NEEDS TO SHOOT FASTER, THAT FEELS BETTER AND LOOKS COOLER AND WILL SOLVE ISSUES WITH COLLIDERS 
+
 public class GunHandler : MonoBehaviour
 {
     public IWeapon weapon; //This needs to be public so that the SwapWeapon script can access it because the weapon swap should occur when the player touches a gun, not when the gun 
@@ -52,6 +54,7 @@ public class GunHandler : MonoBehaviour
     [Header ("Scriptable Object")]
     [SerializeField] private ColorList theColors;
 
+    public Gun activeGun;
 
     private void Awake()
     {
@@ -110,6 +113,38 @@ public class GunHandler : MonoBehaviour
 
         this.weapon.shoot(this.shootingPoint, this.bulletPrefab, this.nextColor);
 
+
+/*
+        if (true)
+        {
+
+            for (int i = 0; i < activeGun.bulletPositions.Length; i++)
+            {
+                float negative = 1;
+                if (i % 2 == 0)
+                {
+                    negative = 1;
+                }
+                else
+                {
+                    negative = -1;
+                }
+
+                GameObject bullet = Instantiate(bulletPrefab, shootingPoint.transform.position, shootingPoint.transform.rotation);
+
+                Rigidbody2D bulletRB = bullet.GetComponent<Rigidbody2D>();
+
+                bulletRB.velocity = shootingPoint.transform.right * activeGun.bulletSpeed;
+
+                bullet.GetComponent<SpriteRenderer>().color = this.nextColor;
+
+            }
+
+
+        }*/
+
+
+
         Color color = theColors.colors[randomColor];
         this.nextColor = color;
         crosshairSpriteRenderer.color = color;
@@ -118,16 +153,26 @@ public class GunHandler : MonoBehaviour
 
     }
 
+
+    public void shoot(GameObject shootingPoint, GameObject bulletPrefab, Color color)
+    {
+
+
+    }
+
+
+
+
     private void flipXFalse()
     {
         playerSpriteRenderer.flipX = false;
-        gunSprite.flipX = false;
+        gunSprite.flipY = false;
     }
 
     private void flipXTrue()
     {
         playerSpriteRenderer.flipX = true;
-        gunSprite.flipX = true;
+        gunSprite.flipY = true;
     }
 
 
@@ -155,9 +200,9 @@ public class GunHandler : MonoBehaviour
 
         lookDir = mousePos - rb.position;
 
-
-        angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
+        angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg;
         rb.rotation = angle;
+        
 
     }
 

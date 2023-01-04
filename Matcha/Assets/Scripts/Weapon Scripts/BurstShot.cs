@@ -30,14 +30,14 @@ public class BurstShot : MonoBehaviour, IWeapon
         Rigidbody2D bulletRB2 = bullet2.GetComponent<Rigidbody2D>();
         Rigidbody2D bulletRB3 = bullet3.GetComponent<Rigidbody2D>();
 
-        bulletRB1.AddForce(shootingPoint.transform.up * bulletSpeed, ForceMode2D.Impulse);
+        bulletRB1.AddForce(shootingPoint.transform.right * bulletSpeed, ForceMode2D.Impulse);
 
         shootingPoint.transform.Rotate(0.0f, 0.0f, 10.0f, Space.Self);
-        bulletRB2.AddForce(shootingPoint.transform.up * bulletSpeed, ForceMode2D.Impulse);
+        bulletRB2.AddForce(shootingPoint.transform.right * bulletSpeed, ForceMode2D.Impulse);
 
         shootingPoint.transform.Rotate(0.0f, 0.0f, -20.0f, Space.Self);
 
-        bulletRB3.AddForce(shootingPoint.transform.up * bulletSpeed, ForceMode2D.Impulse);
+        bulletRB3.AddForce(shootingPoint.transform.right * bulletSpeed, ForceMode2D.Impulse);
 
         shootingPoint.transform.Rotate(0.0f, 0.0f, 10.0f, Space.Self);
 

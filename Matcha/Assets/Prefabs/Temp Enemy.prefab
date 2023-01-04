@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 8580337691347087893}
   m_Layer: 10
   m_Name: Temp Enemy
-  m_TagString: Enemy
+  m_TagString: TempEnemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -50,66 +50,103 @@ public class BulletHit : MonoBehaviour
             bulletHasBounced = true;
         }*/
 
-        if (collision.gameObject.tag == "Mirror")
+        Color bulletColor = bulletSpriteRenderer.color;
+
+        switch (collision.gameObject.tag)
         {
-            bulletHasBounced = true;
+            case "Mirror":
+                bulletHasBounced = true;
+                break;
+
+            case "Player":
+                
+                
+
+                if (bulletColor == collision.gameObject.transform.GetChild(0).GetComponent<SpriteRenderer>().color)
+                {
+
+
+                    Debug.Log("Hit by same color bullet, MATCHA!");
+                    createMatcha(bulletColor);
+
+
+                }
+                else
+                {
+                    Debug.Log("hit by different color");
+                    collision.gameObject.transform.GetChild(0).GetComponent<SpriteRenderer>().color = bulletSpriteRenderer.color;
+                }
+                createSplat();
+                Destroy(gameObject);
+
+                break;
+
+
+            case "Enemy":
+
+
+                if (bulletColor == collision.gameObject.GetComponent<SpriteRenderer>().color)
+                {
+
+
+                    Debug.Log("Hit by same color bullet, MATCHA!");
+                    createMatcha(bulletColor);
+
+
+                    if (collision.gameObject.transform.parent == null)
+                    {
+                        Destroy(collision.gameObject);
+                    }
+                    else
+                    {
+                        Destroy(collision.gameObject.transform.parent.gameObject);
+                    }
+                }
+                else
+                {
+                    Debug.Log("hit by different color");
+                    collision.gameObject.GetComponent<SpriteRenderer>().color = bulletSpriteRenderer.color;
+                }
+                createSplat();
+                Destroy(gameObject);
+
+
+                break;
+
+            case "TempEnemy":
+
+
+
+                if (bulletColor == collision.gameObject.GetComponent<SpriteRenderer>().color)
+                {
+
+
+                    Debug.Log("Hit by same color bullet, MATCHA!");
+                    createMatcha(bulletColor);
+
+                    Destroy(collision.gameObject);
+
+                }
+                else
+                {
+                    Debug.Log("hit by different color");
+                    collision.gameObject.GetComponent<SpriteRenderer>().color = bulletSpriteRenderer.color;
+                }
+                createSplat();
+                Destroy(gameObject);
+
+
+
+                break;
+
+            case "Ground":
+
+                createSplat();
+                Destroy(gameObject);
+
+                break;
         }
 
-
-        if (collision.gameObject.tag == "Player" && bulletHasBounced == true)
-        {
-            Color bulletColor = bulletSpriteRenderer.color;
-
-            if (bulletColor == collision.gameObject.GetComponent<SpriteRenderer>().color)
-            {
-
-
-                Debug.Log("Hit by same color bullet, MATCHA!");
-                createMatcha(bulletColor);
-
-
-            }
-            else
-            {
-                Debug.Log("hit by different color");
-                collision.gameObject.GetComponent<SpriteRenderer>().color = bulletSpriteRenderer.color;
-            }
-            createSplat();
-            Destroy(gameObject);
-        }
-
-        if(collision.gameObject.tag == "Enemy")
-        {
-
-            Color bulletColor = bulletSpriteRenderer.color;
-
-
-            if (bulletColor == collision.gameObject.GetComponent<SpriteRenderer>().color)
-            {
-
-
-                Debug.Log("Hit by same color bullet, MATCHA!");
-                createMatcha(bulletColor);
-
-                collision.gameObject.SetActive(false);
-            }
-            else
-            {
-                Debug.Log("hit by different color");
-                collision.gameObject.GetComponent<SpriteRenderer>().color = bulletSpriteRenderer.color;
-            }
-            createSplat();
-            Destroy(gameObject);
-        }
-
-
-
-
-        if (collision.gameObject.tag == "Ground")
-        {
-            createSplat();
-            Destroy(gameObject);
-        }
 
 
         /*we shoot the bullet

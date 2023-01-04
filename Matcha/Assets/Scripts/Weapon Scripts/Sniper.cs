@@ -18,7 +18,7 @@ public class Sniper : MonoBehaviour, IWeapon
 
         Rigidbody2D bulletRB = bullet.GetComponent<Rigidbody2D>();
 
-        bulletRB.AddForce(shootingPoint.transform.up * bulletSpeed, ForceMode2D.Impulse);
+        bulletRB.AddForce(shootingPoint.transform.right * bulletSpeed, ForceMode2D.Impulse);
 
         bullet.GetComponent<SpriteRenderer>().color = color; 
 

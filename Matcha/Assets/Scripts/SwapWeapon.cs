@@ -8,36 +8,7 @@ public class SwapWeapon : MonoBehaviour
     [SerializeField] private GunHandler gunHandler;
     [SerializeField] private SpriteRenderer gunSprite;
 
-/*
-
-    public PlayerInputActions playerControls;
-    private InputAction switchWeapon;
-
-
-    private void Awake()
-    {
-        playerControls = new PlayerInputActions();
-    }
-
-    private void OnEnable()
-    {
-        switchWeapon = playerControls.Player.SwitchWeapon;
-        switchWeapon.Enable();
-        switchWeapon.performed += switchPlayerWeapon;
-    }
-
-    private void OnDisable()
-    {
-        switchWeapon.Disable();
-    }
-
-
-    private void switchPlayerWeapon(InputAction.CallbackContext context)
-    {
-
-
-    }
-*/
+    [SerializeField] private Gun[] Guns;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -71,3 +42,35 @@ public class SwapWeapon : MonoBehaviour
     }
 
 }
+
+
+/*
+
+    public PlayerInputActions playerControls;
+    private InputAction switchWeapon;
+
+
+    private void Awake()
+    {
+        playerControls = new PlayerInputActions();
+    }
+
+    private void OnEnable()
+    {
+        switchWeapon = playerControls.Player.SwitchWeapon;
+        switchWeapon.Enable();
+        switchWeapon.performed += switchPlayerWeapon;
+    }
+
+    private void OnDisable()
+    {
+        switchWeapon.Disable();
+    }
+
+
+    private void switchPlayerWeapon(InputAction.CallbackContext context)
+    {
+
+
+    }
+*/
