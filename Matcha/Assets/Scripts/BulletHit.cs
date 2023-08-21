@@ -17,7 +17,7 @@ public class BulletHit : MonoBehaviour
         paintSplat.GetComponent<SpriteRenderer>().color = bulletSpriteRenderer.color;
         paintSplat.transform.localScale = gameObject.transform.localScale;
     }
-    
+
     private void createMatcha(Color bulletColor)
     {
         GameObject matcha = Instantiate(MATCHAprefab, transform.position + new Vector3(0f, 0f, -1.8f), Quaternion.identity);
@@ -25,7 +25,11 @@ public class BulletHit : MonoBehaviour
 
     }
 
-    private void OnCollisionEnter2D(Collision2D collision){
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        
+        
+ 
 
 
         //switch (collision.gameObject.tag)
@@ -59,21 +63,21 @@ public class BulletHit : MonoBehaviour
                 break;
 
             case "Player":
-                
-                
+
+
 
                 if (bulletColor == collision.gameObject.transform.GetChild(0).GetComponent<SpriteRenderer>().color)
                 {
 
 
-                    Debug.Log("Hit by same color bullet, MATCHA!");
+                    //Debug.Log("Hit by same color bullet, MATCHA!");
                     createMatcha(bulletColor);
 
 
                 }
                 else
                 {
-                    Debug.Log("hit by different color");
+                    //Debug.Log("hit by different color");
                     collision.gameObject.transform.GetChild(0).GetComponent<SpriteRenderer>().color = bulletSpriteRenderer.color;
                 }
                 createSplat();
@@ -85,28 +89,20 @@ public class BulletHit : MonoBehaviour
             case "Enemy":
 
 
-                if (bulletColor == collision.gameObject.GetComponent<SpriteRenderer>().color)
+                Debug.Log("Hit by same color bullet, MATCHA!");
+                createMatcha(bulletColor);
+
+
+                if (collision.gameObject.transform.parent == null)
                 {
-
-
-                    Debug.Log("Hit by same color bullet, MATCHA!");
-                    createMatcha(bulletColor);
-
-
-                    if (collision.gameObject.transform.parent == null)
-                    {
-                        Destroy(collision.gameObject);
-                    }
-                    else
-                    {
-                        Destroy(collision.gameObject.transform.parent.gameObject);
-                    }
+                    Destroy(collision.gameObject);
                 }
                 else
                 {
-                    Debug.Log("hit by different color");
-                    collision.gameObject.GetComponent<SpriteRenderer>().color = bulletSpriteRenderer.color;
+                    Destroy(collision.gameObject.transform.parent.gameObject);
                 }
+
+
                 createSplat();
                 Destroy(gameObject);
 

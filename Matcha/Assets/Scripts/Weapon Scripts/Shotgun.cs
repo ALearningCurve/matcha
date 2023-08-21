@@ -15,7 +15,7 @@ public class Shotgun : MonoBehaviour, IWeapon
 
     public void shoot(GameObject shootingPoint, GameObject bulletPrefab, Color color)
     {
-        float bulletCount = 5f;
+        float bulletCount = 10f;
 
 
         shootingPoint.transform.rotation = new Quaternion(0f, 0f, 0f, 0f);
@@ -24,7 +24,7 @@ public class Shotgun : MonoBehaviour, IWeapon
 
         for (int i = 0; i < bulletCount; i++)
         {
-            float bulletSize = Random.Range(0.2f, 0.25f);
+            float bulletSize = Random.Range(0.2f, 0.5f);
 
             GameObject bullet = Instantiate(bulletPrefab, shootingPoint.transform.position, shootingPoint.transform.rotation);
 

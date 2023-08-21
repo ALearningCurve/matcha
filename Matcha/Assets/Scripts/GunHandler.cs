@@ -67,7 +67,7 @@ public class GunHandler : MonoBehaviour
         gunSprite.color = Color.white;
         bulletSprite.color = Color.white;
 
-        this.weapon = new Pistol();
+        this.weapon = new Shotgun();
 
 
         int randomColor = Random.Range(0, theColors.colors.Count);
